@@ -1,5 +1,5 @@
 import { Calendar, MapPin, Clock, Users, Tag } from "lucide-react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "../../../components/figma/ImageWithFallback";
 
 export function Events() {
   const upcomingEvents = [

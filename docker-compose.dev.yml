@@ -1,0 +1,19 @@
+services:
+  frontend:
+    command: npm run dev -- --host 0.0.0.0
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:3001/api/v1
+  backend:
+    command: npm run dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://erp_user:secretpassword@postgres:5432/college_erp_db?schema=public
+  postgres:
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro

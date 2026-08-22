@@ -1,0 +1,1 @@
+export const fileUpload = { maxFileSizeBytes: 10 * 1024 * 1024 } as const;

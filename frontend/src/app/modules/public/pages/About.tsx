@@ -1,5 +1,5 @@
 import { Target, Eye, Award, Globe, Users, BookOpen } from "lucide-react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "../../../components/figma/ImageWithFallback";
 
 export function About() {
   const leadership = [

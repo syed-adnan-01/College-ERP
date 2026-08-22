@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search, Filter, Mail, Phone, Award } from "lucide-react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "../../../components/figma/ImageWithFallback";
 
 export function Faculty() {
   const [searchTerm, setSearchTerm] = useState("");

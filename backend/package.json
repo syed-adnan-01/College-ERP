@@ -5,15 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "npx -p typescript tsc",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:studio": "prisma studio"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
-    "@college-erp/shared": "*",
+    "@college-erp/shared": "file:../shared",
     "@prisma/client": "^5.10.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
