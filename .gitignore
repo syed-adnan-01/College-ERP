@@ -45,7 +45,8 @@ uploads/
 coverage/
 
 #Docs
-architecture.md
-implementation_plan.md
-knowledge_base.md
-system_architecture.md
+docs/architecture.md
+docs/implementation_plan.md
+docs/knowledge_base.md
+docs/system_architecture.md
+docs/api-reference.md
