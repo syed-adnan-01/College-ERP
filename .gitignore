@@ -44,3 +44,8 @@ uploads/
 # Coverage
 coverage/
 
+#Docs
+architecture.md
+implementation_plan.md
+knowledge_base.md
+system_architecture.md
