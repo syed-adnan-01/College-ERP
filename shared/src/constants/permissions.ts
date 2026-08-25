@@ -1,8 +1,17 @@
+import { ROLES, UserRole } from './roles.js';
+
 export const PERMISSIONS = {
-  // Tenant Permissions
+  // Tenant Permissions (Platform & Tenant Mgmt)
   TENANTS_VIEW: 'tenants.view',
   TENANTS_CREATE: 'tenants.create',
   TENANTS_UPDATE: 'tenants.update',
+  TENANTS_DELETE: 'tenants.delete',
+
+  // User Management
+  USERS_VIEW: 'users.view',
+  USERS_CREATE: 'users.create',
+  USERS_UPDATE: 'users.update',
+  USERS_DELETE: 'users.delete',
 
   // Student Permissions
   STUDENTS_VIEW: 'students.view',
@@ -14,9 +23,12 @@ export const PERMISSIONS = {
   // Faculty Permissions
   FACULTY_VIEW: 'faculty.view',
   FACULTY_MANAGE: 'faculty.manage',
+  FACULTY_OWN_VIEW: 'faculty.own.view',
 
   // Academic Permissions
+  COURSES_VIEW: 'courses.view',
   COURSES_MANAGE: 'courses.manage',
+  TIMETABLE_VIEW: 'timetable.view',
   TIMETABLE_MANAGE: 'timetable.manage',
 
   // Attendance Permissions
@@ -24,18 +36,113 @@ export const PERMISSIONS = {
   ATTENDANCE_VIEW: 'attendance.view',
   ATTENDANCE_OWN_VIEW: 'attendance.own.view',
 
-  // Exam Permissions
+  // Exam & Grade Permissions
+  EXAMS_VIEW: 'exams.view',
   EXAMS_MANAGE: 'exams.manage',
   EXAMS_GRADE: 'exams.grade',
   EXAMS_RESULTS_PUBLISH: 'exams.results.publish',
+  EXAMS_OWN_VIEW: 'exams.own.view',
 
   // Finance Permissions
   FINANCE_VIEW: 'finance.view',
   FINANCE_MANAGE: 'finance.manage',
   FINANCE_OWN_VIEW: 'finance.own.view',
 
-  // Settings
+  // System Settings
+  SETTINGS_VIEW: 'settings.view',
   SETTINGS_MANAGE: 'settings.manage',
 } as const;
 
 export type PermissionKey = typeof PERMISSIONS[keyof typeof PERMISSIONS];
+
+/**
+ * Granular Role to Permission Mapping Matrix
+ */
+export const ROLE_PERMISSIONS: Record<UserRole, PermissionKey[] | string[]> = {
+  [ROLES.SUPER_ADMIN]: ['*'], // Wildcard access across all modules & tenants
+  [ROLES.ADMIN]: [
+    PERMISSIONS.TENANTS_VIEW,
+    PERMISSIONS.TENANTS_UPDATE,
+    PERMISSIONS.USERS_VIEW,
+    PERMISSIONS.USERS_CREATE,
+    PERMISSIONS.USERS_UPDATE,
+    PERMISSIONS.USERS_DELETE,
+    PERMISSIONS.STUDENTS_VIEW,
+    PERMISSIONS.STUDENTS_CREATE,
+    PERMISSIONS.STUDENTS_UPDATE,
+    PERMISSIONS.STUDENTS_DELETE,
+    PERMISSIONS.FACULTY_VIEW,
+    PERMISSIONS.FACULTY_MANAGE,
+    PERMISSIONS.COURSES_VIEW,
+    PERMISSIONS.COURSES_MANAGE,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.TIMETABLE_MANAGE,
+    PERMISSIONS.ATTENDANCE_VIEW,
+    PERMISSIONS.ATTENDANCE_MARK,
+    PERMISSIONS.EXAMS_VIEW,
+    PERMISSIONS.EXAMS_MANAGE,
+    PERMISSIONS.EXAMS_GRADE,
+    PERMISSIONS.EXAMS_RESULTS_PUBLISH,
+    PERMISSIONS.FINANCE_VIEW,
+    PERMISSIONS.FINANCE_MANAGE,
+    PERMISSIONS.SETTINGS_VIEW,
+    PERMISSIONS.SETTINGS_MANAGE,
+  ],
+  [ROLES.HOD]: [
+    PERMISSIONS.USERS_VIEW,
+    PERMISSIONS.STUDENTS_VIEW,
+    PERMISSIONS.STUDENTS_UPDATE,
+    PERMISSIONS.FACULTY_VIEW,
+    PERMISSIONS.FACULTY_MANAGE,
+    PERMISSIONS.COURSES_VIEW,
+    PERMISSIONS.COURSES_MANAGE,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.TIMETABLE_MANAGE,
+    PERMISSIONS.ATTENDANCE_VIEW,
+    PERMISSIONS.ATTENDANCE_MARK,
+    PERMISSIONS.EXAMS_VIEW,
+    PERMISSIONS.EXAMS_MANAGE,
+    PERMISSIONS.EXAMS_GRADE,
+    PERMISSIONS.EXAMS_RESULTS_PUBLISH,
+    PERMISSIONS.SETTINGS_VIEW,
+  ],
+  [ROLES.FACULTY]: [
+    PERMISSIONS.STUDENTS_VIEW,
+    PERMISSIONS.FACULTY_OWN_VIEW,
+    PERMISSIONS.COURSES_VIEW,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.ATTENDANCE_MARK,
+    PERMISSIONS.ATTENDANCE_VIEW,
+    PERMISSIONS.EXAMS_VIEW,
+    PERMISSIONS.EXAMS_GRADE,
+  ],
+  [ROLES.STUDENT]: [
+    PERMISSIONS.STUDENTS_OWN_VIEW,
+    PERMISSIONS.COURSES_VIEW,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.ATTENDANCE_OWN_VIEW,
+    PERMISSIONS.EXAMS_OWN_VIEW,
+    PERMISSIONS.FINANCE_OWN_VIEW,
+  ],
+  [ROLES.PARENT]: [
+    PERMISSIONS.STUDENTS_OWN_VIEW,
+    PERMISSIONS.ATTENDANCE_OWN_VIEW,
+    PERMISSIONS.EXAMS_OWN_VIEW,
+    PERMISSIONS.FINANCE_OWN_VIEW,
+  ],
+  [ROLES.STAFF]: [
+    PERMISSIONS.STUDENTS_VIEW,
+    PERMISSIONS.FACULTY_VIEW,
+    PERMISSIONS.COURSES_VIEW,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.ATTENDANCE_VIEW,
+    PERMISSIONS.FINANCE_VIEW,
+  ],
+};
+
+export function hasPermission(role: UserRole, userPermissions: string[], requiredPermission: string): boolean {
+  if (role === ROLES.SUPER_ADMIN || userPermissions.includes('*')) {
+    return true;
+  }
+  return userPermissions.includes(requiredPermission);
+}

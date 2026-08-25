@@ -18,11 +18,28 @@ export interface User {
 
 export interface AuthUser {
   id: string;
-  uid?: string; // Firebase Auth UID
+  uid?: string; // Firebase Auth UID if social login
   tenantId: string;
   email: string;
   role: UserRole;
   firstName: string;
   lastName: string;
+  avatar?: string | null;
   permissions: string[];
+}
+
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface LoginResponse {
+  user: AuthUser;
+  tokens: AuthTokens;
+  tenant: {
+    id: string;
+    name: string;
+    slug: string;
+    logo?: string | null;
+  };
 }

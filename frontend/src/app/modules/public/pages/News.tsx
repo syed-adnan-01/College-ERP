@@ -1,5 +1,5 @@
 import { Calendar, User, Tag, TrendingUp, Award, Megaphone } from "lucide-react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "../../../components/figma/ImageWithFallback";
 
 export function News() {
   const featuredNews = {

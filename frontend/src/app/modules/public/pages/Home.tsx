@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { ArrowRight, Users, BookOpen, Award, TrendingUp, CheckCircle, Quote } from "lucide-react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "../../../components/figma/ImageWithFallback";
 
 export function Home() {
   const stats = [

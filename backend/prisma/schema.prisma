@@ -1,0 +1,357 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubscriptionTier {
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+model Tenant {
+  id               String           @id @default(uuid())
+  name             String
+  slug             String           @unique
+  domain           String?
+  logo             String?
+  themeConfig      Json?
+  enabledModules   String[]         @default([])
+  subscriptionTier SubscriptionTier @default(BASIC)
+  isActive         Boolean          @default(true)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  users           User[]
+  roles           Role[]
+  rolePermissions RolePermission[]
+  sessions        Session[]
+  passwordResets  PasswordReset[]
+
+  departments Department[]
+  programs    Program[]
+  courses     Course[]
+  semesters   Semester[]
+  sections    Section[]
+  faculties   FacultyMember[]
+  students    Student[]
+  guardians   Guardian[]
+  classRooms  ClassRoom[]
+  timetables  Timetable[]
+  attendances AttendanceRecord[]
+
+  @@index([slug])
+  @@index([domain])
+}
+
+model User {
+  id            String    @id @default(uuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email         String
+  passwordHash  String
+  firstName     String
+  lastName      String
+  phone         String?
+  avatar        String?
+  role          String
+  firebaseUid   String?   @unique
+  isActive      Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions       Session[]
+  passwordResets PasswordReset[]
+  facultyProfile FacultyMember?
+  studentProfile Student?
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([email])
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  key       String
+  name      String
+  isSystem  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, key])
+  @@index([tenantId])
+}
+
+model Permission {
+  id              String           @id @default(uuid())
+  key             String           @unique
+  description     String?
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  tenantId     String
+  tenant       Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  role         String
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, role, permissionId])
+  @@index([tenantId])
+}
+
+model Session {
+  id         String    @id @default(uuid())
+  tenantId   String
+  tenant     Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshJti String    @unique
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([tenantId])
+  @@index([userId])
+}
+
+model PasswordReset {
+  id        String    @id @default(uuid())
+  tenantId  String
+  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([tenantId])
+  @@index([userId])
+}
+
+// --- ACADEMICS DOMAIN ---
+
+model Department {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name      String
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  programs  Program[]
+  courses   Course[]
+  faculties FacultyMember[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+}
+
+model Program {
+  id            String     @id @default(uuid())
+  tenantId      String
+  tenant        Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  name          String
+  code          String
+  durationYears Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  semesters Semester[]
+  students  Student[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+}
+
+model Course {
+  id           String     @id @default(uuid())
+  tenantId     String
+  tenant       Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  name         String
+  code         String
+  credits      Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  timetables Timetable[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+}
+
+model Semester {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  programId String
+  program   Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  term      String // e.g., Fall 2024
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sections Section[]
+  students Student[]
+
+  @@index([tenantId])
+}
+
+model Section {
+  id         String   @id @default(uuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  semesterId String
+  semester   Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  name       String // e.g., Section A
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  students   Student[]
+  timetables Timetable[]
+
+  @@index([tenantId])
+}
+
+// --- FACULTY DOMAIN ---
+
+model FacultyMember {
+  id           String     @id @default(uuid())
+  tenantId     String
+  tenant       Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId       String     @unique
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  designation  String
+  joinDate     DateTime
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  timetables Timetable[]
+
+  @@index([tenantId])
+}
+
+// --- STUDENTS DOMAIN ---
+
+model Student {
+  id                String    @id @default(uuid())
+  tenantId          String
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollmentNo      String
+  admissionDate     DateTime
+  programId         String
+  program           Program   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  currentSemesterId String?
+  currentSemester   Semester? @relation(fields: [currentSemesterId], references: [id], onDelete: SetNull)
+  sectionId         String?
+  section           Section?  @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  guardians   Guardian[]
+  attendances AttendanceRecord[]
+
+  @@unique([tenantId, enrollmentNo])
+  @@index([tenantId])
+}
+
+model Guardian {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  name      String
+  relation  String
+  phone     String?
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+// --- SCHEDULING & ATTENDANCE ---
+
+model ClassRoom {
+  id         String   @id @default(uuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  building   String
+  roomNumber String
+  capacity   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  timetables Timetable[]
+
+  @@index([tenantId])
+}
+
+model Timetable {
+  id          String        @id @default(uuid())
+  tenantId    String
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sectionId   String
+  section     Section       @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  facultyId   String
+  faculty     FacultyMember @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  classRoomId String
+  classRoom   ClassRoom     @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  dayOfWeek   Int // 0-6 (Sunday-Saturday)
+  startTime   String // HH:mm
+  endTime     String // HH:mm
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  attendances AttendanceRecord[]
+
+  @@index([tenantId])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+model AttendanceRecord {
+  id          String           @id @default(uuid())
+  tenantId    String
+  tenant      Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  studentId   String
+  student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  timetableId String
+  timetable   Timetable        @relation(fields: [timetableId], references: [id], onDelete: Cascade)
+  date        DateTime
+  status      AttendanceStatus
+  remarks     String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([studentId, timetableId, date])
+  @@index([tenantId])
+}

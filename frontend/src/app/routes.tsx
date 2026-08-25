@@ -1,14 +1,18 @@
 import { createBrowserRouter } from "react-router";
-import { RootLayout } from "./components/RootLayout";
-import { Home } from "./pages/Home";
-import { About } from "./pages/About";
-import { Courses } from "./pages/Courses";
-import { Faculty } from "./pages/Faculty";
-import { Admissions } from "./pages/Admissions";
-import { Events } from "./pages/Events";
-import { News } from "./pages/News";
-import { Contact } from "./pages/Contact";
-import { Login } from "./pages/Login";
+import { RootLayout } from "./components/layout/RootLayout";
+import { Home } from "./modules/public/pages/Home";
+import { About } from "./modules/public/pages/About";
+import { Courses } from "./modules/public/pages/Courses";
+import { Faculty } from "./modules/public/pages/Faculty";
+import { Admissions } from "./modules/public/pages/Admissions";
+import { Events } from "./modules/public/pages/Events";
+import { News } from "./modules/public/pages/News";
+import { Contact } from "./modules/public/pages/Contact";
+import { Login } from "./modules/auth/pages/Login";
+import { ForgotPassword } from "./modules/auth/pages/ForgotPassword";
+import { ResetPassword } from "./modules/auth/pages/ResetPassword";
+import { Dashboard } from "./modules/dashboard/pages/Dashboard";
+import { ProtectedRoute } from "./modules/auth/guards/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -25,8 +29,11 @@ export const router = createBrowserRouter([
       { path: "contact", Component: Contact },
     ],
   },
+  { path: "/login", Component: Login },
+  { path: "/forgot-password", Component: ForgotPassword },
+  { path: "/reset-password", Component: ResetPassword },
   {
-    path: "/login",
-    Component: Login,
+    path: "/dashboard",
+    element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
   },
 ]);

@@ -1,0 +1,1 @@
+export async function sendMail() { throw new Error("Mail delivery is not configured yet."); }
