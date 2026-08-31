@@ -1,259 +1,292 @@
-import { Calendar, MapPin, Clock, Users, Tag } from "lucide-react";
+import { useState } from "react";
+import { Calendar, MapPin, Clock, Users, ArrowRight, Sparkles, Filter, ChevronRight } from "lucide-react";
 import { ImageWithFallback } from "../../../components/figma/ImageWithFallback";
+import { HighlighterUnderline } from "../../../components/ui/HighlighterUnderline";
+import { Link } from "react-router";
 
 export function Events() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const categories = ["All", "Technology", "Career", "Academic", "Cultural", "Business"];
+
   const upcomingEvents = [
     {
-      title: "Annual Tech Fest 2026",
-      date: "April 15-17, 2026",
-      time: "9:00 AM - 6:00 PM",
-      location: "Main Campus Auditorium",
+      title: "Annual Tech Innovation Fest 2026",
+      month: "APR",
+      day: "15",
+      date: "April 15–17, 2026",
+      time: "9:00 AM – 6:00 PM EST",
+      location: "Main University Auditorium & Hall A",
       category: "Technology",
-      attendees: "2000+",
+      attendees: "2,000+ Registered",
       image: "https://images.unsplash.com/photo-1561089489-f13d5e730d72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1bml2ZXJzaXR5JTIwZXZlbnQlMjBjb25mZXJlbmNlfGVufDF8fHx8MTc3NDc3NTQwOHww&ixlib=rb-4.1.0&q=80&w=1080",
-      description: "Join us for three days of innovation, workshops, competitions, and networking with industry leaders.",
+      description: "Three immersive days of cutting-edge tech demonstrations, hackathons, robotics showcases, and keynote addresses by silicon leaders.",
+      badge: "Flagship Event",
     },
     {
-      title: "Career Fair 2026",
+      title: "Spring Career & Internship Expo 2026",
+      month: "APR",
+      day: "22",
       date: "April 22, 2026",
-      time: "10:00 AM - 5:00 PM",
-      location: "Sports Complex",
+      time: "10:00 AM – 5:00 PM EST",
+      location: "Grand Athletic Center Arena",
       category: "Career",
       attendees: "150+ Companies",
       image: "https://images.unsplash.com/photo-1758270705657-f28eec1a5694?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xsZWdlJTIwc3R1ZGVudHMlMjBzdHVkeWluZyUyMHRvZ2V0aGVyfGVufDF8fHx8MTc3NDc3NTQwNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      description: "Meet recruiters from top companies, explore internship opportunities, and kickstart your career.",
+      description: "Connect directly with talent recruiters from Fortune 500 enterprises, tech startups, and research institutions.",
+      badge: "Placement Drive",
     },
     {
-      title: "Research Symposium",
-      date: "May 1-2, 2026",
-      time: "8:30 AM - 5:00 PM",
-      location: "Conference Hall",
+      title: "Annual Doctoral Research Symposium",
+      month: "MAY",
+      day: "01",
+      date: "May 1–2, 2026",
+      time: "8:30 AM – 5:00 PM EST",
+      location: "Graduate Science Quadrangle",
       category: "Academic",
-      attendees: "500+",
-      image: "https://images.unsplash.com/photo-1707944746058-4da338d0f827?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzY2llbmNlJTIwbGFib3JhdG9yeSUyMHJlc2VhcmNofGVufDF8fHx8MTc3NDY1NTE4NHww&ixlib=rb-4.1.0&q=80&w=1080",
-      description: "Showcase of cutting-edge research by students and faculty across all disciplines.",
+      attendees: "500+ Scholars",
+      image: "https://images.unsplash.com/photo-1707944746058-4da338d0f827?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzY2llbmNlJTIwbGFib3JhdG9yeSUyMHJlc2VhcmNofGVufDF8fHx8MTc3NDY1NTE4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      description: "Showcasing peer-reviewed papers, poster sessions, and grant-winning inventions across biomedical sciences, computing, and humanities.",
+      badge: "Peer-Reviewed",
     },
     {
-      title: "Spring Music Festival",
+      title: "Spring Symphony & Gala Night",
+      month: "MAY",
+      day: "10",
       date: "May 10, 2026",
-      time: "6:00 PM - 11:00 PM",
-      location: "Outdoor Amphitheater",
+      time: "6:00 PM – 10:30 PM EST",
+      location: "Historic Quadrangle Amphitheater",
       category: "Cultural",
-      attendees: "3000+",
+      attendees: "3,000+ Expected",
       image: "https://images.unsplash.com/photo-1660485345088-c398363c1f45?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFkdWF0aW9uJTIwY2VyZW1vbnklMjBjZWxlYnJhdGlvbnxlbnwxfHx8fDE3NzQ3NzA0ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      description: "An evening of live music performances featuring local and international artists.",
+      description: "An unforgettable evening of live orchestral ensembles, contemporary acoustics, visual arts galleries, and food festivals.",
+      badge: "Campus Heritage",
     },
     {
-      title: "Entrepreneurship Summit",
+      title: "Global Entrepreneurship Venture Summit",
+      month: "MAY",
+      day: "20",
       date: "May 20, 2026",
-      time: "9:00 AM - 6:00 PM",
-      location: "Business School Building",
+      time: "9:00 AM – 6:00 PM EST",
+      location: "Executive Business Hall",
       category: "Business",
-      attendees: "800+",
+      attendees: "800+ Delegates",
       image: "https://images.unsplash.com/photo-1561089489-f13d5e730d72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1bml2ZXJzaXR5JTIwZXZlbnQlMjBjb25mZXJlbmNlfGVufDF8fHx8MTc3NDc3NTQwOHww&ixlib=rb-4.1.0&q=80&w=1080",
-      description: "Learn from successful entrepreneurs, pitch your ideas, and network with investors.",
+      description: "Student founders pitch innovative ventures to angel syndicates and venture capitalists for seed grant funding.",
+      badge: "Seed Grants",
     },
     {
-      title: "International Cultural Night",
-      date: "June 5, 2026",
-      time: "7:00 PM - 10:00 PM",
-      location: "Student Center",
+      title: "International Scholars Cultural Night",
+      month: "JUN",
+      day: "05",
+      date: "June 05, 2026",
+      time: "7:00 PM – 10:00 PM EST",
+      location: "Student Commons Plaza",
       category: "Cultural",
-      attendees: "1500+",
-      image: "https://images.unsplash.com/photo-1758270705657-f28eec1a5694?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xsZWdlJTIwc3R1ZGVudHMlMjBzdHVkeWluZyUyMHRvZ2V0aGVyfGVufDF8fHx8MTc3NDc3NTQwNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      description: "Celebrate diversity with performances, food, and traditions from around the world.",
+      attendees: "1,500+ Community",
+      image: "https://images.unsplash.com/photo-1758270705657-f28eec1a5694?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxjb2xsZWdlJTIwc3R1ZGVudHMlMjBzdHVkeWluZyUyMHRvZ2V0aGVyfGVufDF8fHx8MTc3NDc3NTQwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      description: "A celebration of global diversity featuring culinary cuisine, traditional performances, and exhibitions from 50+ countries.",
+      badge: "Open to Public",
     },
   ];
 
   const pastEvents = [
     {
-      title: "Winter Graduation Ceremony 2025",
+      title: "Winter Doctoral Commencement 2025",
       date: "December 15, 2025",
-      attendees: "5000+",
+      attendees: "5,000+ Attendees",
       image: "https://images.unsplash.com/photo-1660485345088-c398363c1f45?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFkdWF0aW9uJTIwY2VyZW1vbnklMjBjZWxlYnJhdGlvbnxlbnwxfHx8fDE3NzQ3NzA0ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      stamp: "Alumni Milestone",
     },
     {
-      title: "Hackathon 2025",
-      date: "November 20-21, 2025",
-      attendees: "400+",
-      image: "https://images.unsplash.com/photo-1707944746058-4da338d0f827?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzY2llbmNlJTIwbGFib3JhdG9yeSUyMHJlc2VhcmNofGVufDF8fHx8MTc3NDY1NTE4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      title: "All-Campus AI Hackathon 2025",
+      date: "November 20–21, 2025",
+      attendees: "400+ Coders",
+      image: "https://images.unsplash.com/photo-1707944746058-4da338d0f827?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxzY2llbmNlJTIwbGFib3JhdG9yeSUyMHJlc2VhcmNofGVufDF8fHx8MTc3NDY1NTE4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      stamp: "24-Hr Hack",
     },
     {
-      title: "Alumni Homecoming 2025",
+      title: "Global Alumni Leadership Gathering",
       date: "October 10, 2025",
-      attendees: "2000+",
-      image: "https://images.unsplash.com/photo-1758270705657-f28eec1a5694?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xsZWdlJTIwc3R1ZGVudHMlMjBzdHVkeWluZyUyMHRvZ2V0aGVyfGVufDF8fHx8MTc3NDc3NTQwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      attendees: "2,000+ Alumni",
+      image: "https://images.unsplash.com/photo-1758270705657-f28eec1a5694?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxjb2xsZWdlJTIwc3R1ZGVudHMlMjBzdHVkeWluZyUyMHRvZ2V0aGVyfGVufDF8fHx8MTc3NDc3NTQwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      stamp: "Homecoming",
     },
   ];
 
-  const getCategoryColor = (category: string) => {
-    const colors: { [key: string]: string } = {
-      Technology: "bg-blue-100 text-blue-700",
-      Career: "bg-green-100 text-green-700",
-      Academic: "bg-purple-100 text-purple-700",
-      Cultural: "bg-pink-100 text-pink-700",
-      Business: "bg-orange-100 text-orange-700",
-    };
-    return colors[category] || "bg-gray-100 text-gray-700";
-  };
+  const filteredEvents = upcomingEvents.filter(
+    (ev) => selectedCategory === "All" || ev.category === selectedCategory
+  );
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Campus Events</h1>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            Discover exciting events, workshops, and activities happening at EduPlatform
-          </p>
+    <div className="space-y-12 sm:space-y-16 py-8 sm:py-12">
+      
+      {/* Header Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="paper-card p-8 sm:p-12 relative overflow-hidden">
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#EDE9DF] text-[#12172B] text-xs font-semibold">
+              <Calendar className="w-3.5 h-3.5 text-[#E8B93F]" />
+              <span>Campus Calendar & Conferences</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl font-bold font-serif text-[#12172B] tracking-tight leading-tight">
+              Campus Events &{" "}
+              <HighlighterUnderline color="#E8B93F">
+                Symposiums
+              </HighlighterUnderline>
+            </h1>
+
+            <p className="text-base text-[#5C6788] leading-relaxed">
+              Explore upcoming academic conferences, career fairs, technical hackathons, and cultural festivities across our campus quads.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Upcoming Events */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
-            <p className="text-xl text-gray-600">Don't miss out on these exciting opportunities</p>
-          </div>
-
-          <div className="space-y-8">
-            {upcomingEvents.map((event, index) => (
-              <div
-                key={index}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+      {/* Filter Strip */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="paper-card p-4 flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-2 overflow-x-auto text-xs">
+            <span className="text-[#5C6788] font-bold text-[11px] uppercase tracking-wider mr-2">
+              Category:
+            </span>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                  selectedCategory === cat
+                    ? "bg-[#12172B] text-white shadow-xs"
+                    : "bg-[#EDE9DF]/60 text-[#5C6788] hover:bg-[#EDE9DF] hover:text-[#12172B]"
+                }`}
               >
-                <div className="grid lg:grid-cols-3 gap-6">
-                  {/* Image */}
-                  <div className="relative h-64 lg:h-auto overflow-hidden">
-                    <ImageWithFallback
-                      src={event.image}
-                      alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <span className={`px-4 py-2 ${getCategoryColor(event.category)} rounded-full text-sm font-semibold backdrop-blur-sm`}>
-                        {event.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="lg:col-span-2 p-6 lg:p-8 flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-900 transition-colors">
-                        {event.title}
-                      </h3>
-                      <p className="text-gray-600 mb-6">{event.description}</p>
-                    </div>
-
-                    <div>
-                      <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                        <div className="flex items-center space-x-3 text-gray-700">
-                          <div className="bg-blue-50 p-2 rounded-lg">
-                            <Calendar className="w-5 h-5 text-blue-900" />
-                          </div>
-                          <div>
-                            <div className="text-sm text-gray-500">Date</div>
-                            <div className="font-semibold">{event.date}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3 text-gray-700">
-                          <div className="bg-blue-50 p-2 rounded-lg">
-                            <Clock className="w-5 h-5 text-blue-900" />
-                          </div>
-                          <div>
-                            <div className="text-sm text-gray-500">Time</div>
-                            <div className="font-semibold">{event.time}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3 text-gray-700">
-                          <div className="bg-blue-50 p-2 rounded-lg">
-                            <MapPin className="w-5 h-5 text-blue-900" />
-                          </div>
-                          <div>
-                            <div className="text-sm text-gray-500">Location</div>
-                            <div className="font-semibold">{event.location}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3 text-gray-700">
-                          <div className="bg-blue-50 p-2 rounded-lg">
-                            <Users className="w-5 h-5 text-blue-900" />
-                          </div>
-                          <div>
-                            <div className="text-sm text-gray-500">Expected</div>
-                            <div className="font-semibold">{event.attendees}</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <button className="w-full sm:w-auto px-8 py-3 bg-blue-900 text-white rounded-xl hover:bg-indigo-800 transition-colors">
-                        Register Now
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                {cat === "All" ? "All Events" : cat}
+              </button>
             ))}
           </div>
+
+          <span className="text-xs text-[#5C6788] font-medium">
+            Showing {filteredEvents.length} events
+          </span>
         </div>
       </section>
 
-      {/* Past Events */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Past Events</h2>
-            <p className="text-xl text-gray-600">Highlights from our recent events</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {pastEvents.map((event, index) => (
-              <div
-                key={index}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
-              >
-                <div className="relative h-56 overflow-hidden">
+      {/* Upcoming Events List */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="space-y-6">
+          {filteredEvents.map((event, index) => (
+            <div
+              key={index}
+              className="paper-card overflow-hidden group hover:shadow-xl transition-all"
+            >
+              <div className="grid lg:grid-cols-12 gap-0">
+                
+                {/* Event Image (4 cols) */}
+                <div className="lg:col-span-4 relative h-64 lg:h-auto overflow-hidden bg-gray-100">
                   <ImageWithFallback
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-xl font-bold mb-1">{event.title}</h3>
-                    <div className="flex items-center justify-between text-sm">
-                      <span>{event.date}</span>
-                      <span>{event.attendees} attendees</span>
-                    </div>
+                  
+                  {/* Pop-out Calendar Date Stamp */}
+                  <div className="absolute top-4 left-4 bg-[#12172B]/95 backdrop-blur-md text-white rounded-xl p-2.5 text-center min-w-[56px] shadow-lg border border-white/20">
+                    <span className="text-[10px] font-bold tracking-wider text-[#E8B93F] block">
+                      {event.month}
+                    </span>
+                    <span className="text-xl font-bold font-serif leading-none block mt-0.5">
+                      {event.day}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-4 right-4">
+                    <span className="margin-note text-[11px]">
+                      {event.badge}
+                    </span>
                   </div>
                 </div>
-                <div className="p-6">
-                  <button className="text-blue-900 font-semibold hover:text-indigo-700 transition-colors">
-                    View Gallery →
-                  </button>
+
+                {/* Event Details (8 cols) */}
+                <div className="lg:col-span-8 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#EDE9DF] text-[#12172B] text-xs font-semibold">
+                        {event.category}
+                      </span>
+                      <span className="text-xs text-[#5C6788]">• {event.attendees}</span>
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl font-bold font-serif text-[#12172B] leading-tight">
+                      {event.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-[#5C6788] leading-relaxed">
+                      {event.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-[#E5E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[#5C6788]">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-[#E8B93F] flex-shrink-0" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-[#E8B93F] flex-shrink-0" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                    </div>
+
+                    <button className="px-5 py-2.5 bg-[#12172B] hover:bg-[#1f2742] text-white text-xs font-semibold rounded-xl transition-all shadow-xs flex-shrink-0 flex items-center justify-center gap-2">
+                      <span>Reserve Free Pass</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#E8B93F]" />
+                    </button>
+                  </div>
+
                 </div>
+
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Event Calendar CTA */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 rounded-2xl p-12 text-white">
-            <Calendar className="w-16 h-16 mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">View Full Calendar</h2>
-            <p className="text-xl text-gray-200 mb-8">
-              Access the complete calendar of events, workshops, and activities
-            </p>
-            <button className="px-8 py-4 bg-white text-blue-900 rounded-xl hover:bg-gray-100 transition-all">
-              Open Event Calendar
-            </button>
+      {/* Past Event Highlights */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-4 border-b border-[#E5E0D2]">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#5C6788]">Archive</span>
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#12172B] mt-1">
+              Recent Event Highlights & Memories
+            </h2>
           </div>
         </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {pastEvents.map((ev, idx) => (
+            <div key={idx} className="paper-card overflow-hidden group hover:shadow-xl transition-all">
+              <div className="relative h-48 overflow-hidden bg-gray-100">
+                <ImageWithFallback
+                  src={ev.image}
+                  alt={ev.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-3 right-3">
+                  <span className="academic-stamp text-[10px] py-0.5 px-2.5">
+                    {ev.stamp}
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 space-y-1.5">
+                <h4 className="text-base font-bold font-serif text-[#12172B] leading-snug">{ev.title}</h4>
+                <p className="text-xs text-[#5C6788]">{ev.date} • {ev.attendees}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
+
     </div>
   );
 }

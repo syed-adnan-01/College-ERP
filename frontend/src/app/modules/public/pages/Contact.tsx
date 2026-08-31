@@ -1,7 +1,12 @@
-import { Mail, Phone, MapPin, Clock, Send, MessageSquare, HelpCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, MessageSquare, HelpCircle, ShieldCheck, CheckCircle2, Building } from "lucide-react";
 import { useState } from "react";
+import { HighlighterUnderline } from "../../../components/ui/HighlighterUnderline";
+import { useTenant } from "../../auth/context/TenantContext";
 
 export function Contact() {
+  const { tenant } = useTenant();
+  const collegeName = tenant?.name || "EduPlatform";
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -10,10 +15,15 @@ export function Contact() {
     message: "",
   });
 
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    }, 4000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -26,91 +36,134 @@ export function Contact() {
   const contactInfo = [
     {
       icon: MapPin,
-      title: "Address",
-      details: ["123 University Avenue", "Education City, EC 12345", "United States"],
+      title: "Campus Location",
+      details: ["Central University Quadrangle", "100 Academic Way, Cambridge", "MA 02138, United States"],
+      badge: "Main Campus",
     },
     {
       icon: Phone,
-      title: "Phone",
-      details: ["+1 (555) 123-4567", "+1 (555) 123-4568 (Admissions)"],
+      title: "Direct Inquiries",
+      details: ["+1 (555) 123-4567 (Central Desk)", "+1 (555) 123-4568 (Admissions)"],
+      badge: "Toll Free",
     },
     {
       icon: Mail,
-      title: "Email",
-      details: ["info@eduplatform.edu", "admissions@eduplatform.edu"],
+      title: "Official Correspondence",
+      details: ["admissions@eduplatform.edu", "registrar@eduplatform.edu"],
+      badge: "24h Response",
     },
     {
       icon: Clock,
-      title: "Office Hours",
-      details: ["Monday - Friday: 8:00 AM - 6:00 PM", "Saturday: 9:00 AM - 2:00 PM", "Sunday: Closed"],
+      title: "Desk Operating Hours",
+      details: ["Monday–Friday: 8:00 AM – 6:00 PM", "Saturday: 9:00 AM – 2:00 PM EST"],
+      badge: "Open Today",
     },
   ];
 
   const departments = [
-    { name: "Admissions Office", email: "admissions@eduplatform.edu", phone: "+1 (555) 101-2001" },
-    { name: "Financial Aid", email: "finaid@eduplatform.edu", phone: "+1 (555) 101-2002" },
-    { name: "International Students", email: "international@eduplatform.edu", phone: "+1 (555) 101-2003" },
-    { name: "Academic Affairs", email: "academics@eduplatform.edu", phone: "+1 (555) 101-2004" },
-    { name: "Student Services", email: "students@eduplatform.edu", phone: "+1 (555) 101-2005" },
-    { name: "IT Support", email: "support@eduplatform.edu", phone: "+1 (555) 101-2006" },
+    { name: "Admissions & Records", email: "admissions@eduplatform.edu", phone: "+1 (555) 101-2001", room: "Hall A, Suite 102" },
+    { name: "Financial Aid & Endowments", email: "finaid@eduplatform.edu", phone: "+1 (555) 101-2002", room: "Bursar Quad, Room 204" },
+    { name: "International Scholar Services", email: "international@eduplatform.edu", phone: "+1 (555) 101-2003", room: "Global Center, Fl 3" },
+    { name: "Academic Affairs & Registrar", email: "academics@eduplatform.edu", phone: "+1 (555) 101-2004", room: "Tower Hall, Suite 401" },
+    { name: "Student Life & Residential Housing", email: "students@eduplatform.edu", phone: "+1 (555) 101-2005", room: "Student Commons, 2nd Fl" },
+    { name: "IT Helpdesk & ERP Support", email: "support@eduplatform.edu", phone: "+1 (555) 101-2006", room: "Library Annex, B1" },
   ];
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            We're here to help. Reach out to us with any questions or inquiries.
-          </p>
+    <div className="space-y-12 sm:space-y-16 py-8 sm:py-12">
+      
+      {/* Header Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="paper-card p-8 sm:p-12 relative overflow-hidden">
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#EDE9DF] text-[#12172B] text-xs font-semibold">
+              <Building className="w-3.5 h-3.5 text-[#E8B93F]" />
+              <span>Campus Directory & Advisory Desk</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl font-bold font-serif text-[#12172B] tracking-tight leading-tight">
+              Get in Touch with Our{" "}
+              <HighlighterUnderline color="#E8B93F">
+                Campus Desk
+              </HighlighterUnderline>
+            </h1>
+
+            <p className="text-base text-[#5C6788] leading-relaxed">
+              Have questions regarding admissions, degree programs, or university facilities? Our advisory team is available to assist you.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Contact Info Cards */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {contactInfo.map((info, index) => {
-              const Icon = info.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
-                >
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-900 to-indigo-700 rounded-xl mb-4">
-                    <Icon className="w-6 h-6 text-white" />
+      {/* 4 Contact Info Cards */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {contactInfo.map((info, index) => {
+            const Icon = info.icon;
+            return (
+              <div
+                key={index}
+                className="paper-card p-6 flex flex-col justify-between space-y-4 hover:shadow-xl transition-all"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-[#12172B] text-[#E8B93F] flex items-center justify-center shadow-xs">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className="margin-note text-[10px]">
+                      {info.badge}
+                    </span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">{info.title}</h3>
-                  <div className="space-y-1 text-sm text-gray-600">
+
+                  <h3 className="text-base font-bold font-serif text-[#12172B] mb-2">
+                    {info.title}
+                  </h3>
+
+                  <div className="space-y-1 text-xs text-[#5C6788] leading-relaxed">
                     {info.details.map((detail, idx) => (
                       <p key={idx}>{detail}</p>
                     ))}
                   </div>
                 </div>
-              );
-            })}
-          </div>
+
+                <div className="pt-2 border-t border-[#E5E0D2]/70 text-[10px] text-[#5C6788] font-medium">
+                  Verified Campus Channel
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Contact Form & Map */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
+      {/* Form & Campus Desk Guide */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Form Container (7 cols) */}
+          <div className="lg:col-span-7 paper-card p-7 sm:p-10 space-y-6">
             <div>
-              <div className="mb-8">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Send us a Message</h2>
-                <p className="text-gray-600">
-                  Fill out the form below and we'll get back to you as soon as possible.
+              <span className="text-xs font-bold uppercase tracking-wider text-[#5C6788]">Inquiry Form</span>
+              <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#12172B] mt-1">
+                Send an Official Dispatch
+              </h2>
+              <p className="text-xs text-[#5C6788] mt-1">
+                Fill out the fields below and the appropriate department registrar will reply within 1 business day.
+              </p>
+            </div>
+
+            {submitted ? (
+              <div className="p-6 rounded-2xl bg-[#EDE9DF] border border-[#2E7D68] text-center space-y-3">
+                <CheckCircle2 className="w-10 h-10 text-[#2E7D68] mx-auto" />
+                <h4 className="text-lg font-bold font-serif text-[#12172B]">Inquiry Successfully Dispatched</h4>
+                <p className="text-xs text-[#5C6788] max-w-sm mx-auto">
+                  Your message has been assigned Ticket #ERP-{Math.floor(1000 + Math.random() * 9000)}. A representative will contact you shortly.
                 </p>
               </div>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="name" className="block text-xs font-bold text-[#12172B] mb-1.5">
                       Full Name *
                     </label>
                     <input
@@ -120,12 +173,12 @@ export function Contact() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
-                      placeholder="John Doe"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E0D2] bg-white text-xs text-[#12172B] focus:ring-2 focus:ring-[#E8B93F] focus:border-transparent outline-none"
+                      placeholder="Eleanor Vance"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="email" className="block text-xs font-bold text-[#12172B] mb-1.5">
                       Email Address *
                     </label>
                     <input
@@ -135,15 +188,15 @@ export function Contact() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
-                      placeholder="john@example.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E0D2] bg-white text-xs text-[#12172B] focus:ring-2 focus:ring-[#E8B93F] focus:border-transparent outline-none"
+                      placeholder="e.vance@example.edu"
                     />
                   </div>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-6">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="phone" className="block text-xs font-bold text-[#12172B] mb-1.5">
                       Phone Number
                     </label>
                     <input
@@ -152,13 +205,13 @@ export function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
-                      placeholder="+1 (555) 123-4567"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E0D2] bg-white text-xs text-[#12172B] focus:ring-2 focus:ring-[#E8B93F] focus:border-transparent outline-none"
+                      placeholder="+1 (555) 019-2834"
                     />
                   </div>
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Subject *
+                    <label htmlFor="subject" className="block text-xs font-bold text-[#12172B] mb-1.5">
+                      Target Department *
                     </label>
                     <select
                       id="subject"
@@ -166,21 +219,21 @@ export function Contact() {
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none appearance-none bg-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E0D2] bg-white text-xs text-[#12172B] focus:ring-2 focus:ring-[#E8B93F] focus:border-transparent outline-none appearance-none"
                     >
-                      <option value="">Select a subject</option>
-                      <option value="admissions">Admissions Inquiry</option>
-                      <option value="financial">Financial Aid</option>
-                      <option value="academic">Academic Programs</option>
-                      <option value="international">International Students</option>
-                      <option value="other">Other</option>
+                      <option value="">Select a Department</option>
+                      <option value="admissions">Admissions & Records</option>
+                      <option value="financial">Financial Aid & Scholarships</option>
+                      <option value="academic">Academic Advising</option>
+                      <option value="international">International Scholar Affairs</option>
+                      <option value="it">Campus IT & ERP Access</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Message *
+                  <label htmlFor="message" className="block text-xs font-bold text-[#12172B] mb-1.5">
+                    Your Message / Inquiry Details *
                   </label>
                   <textarea
                     id="message"
@@ -188,82 +241,101 @@ export function Contact() {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    rows={6}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none resize-none"
-                    placeholder="Tell us how we can help you..."
+                    rows={5}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E0D2] bg-white text-xs text-[#12172B] focus:ring-2 focus:ring-[#E8B93F] focus:border-transparent outline-none resize-none"
+                    placeholder="Provide relevant student ID, desired program code, or specific questions..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full px-8 py-4 bg-gradient-to-r from-blue-900 to-indigo-700 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center space-x-2"
+                  className="w-full py-3.5 bg-[#12172B] hover:bg-[#1f2742] text-white font-semibold text-xs rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                 >
-                  <Send className="w-5 h-5" />
-                  <span>Send Message</span>
+                  <Send className="w-4 h-4 text-[#E8B93F]" />
+                  <span>Transmit Inquiry to Registrar</span>
                 </button>
               </form>
-            </div>
+            )}
+          </div>
 
-            {/* Map Placeholder */}
-            <div>
-              <div className="sticky top-24 space-y-6">
-                {/* Map */}
-                <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl h-96 flex items-center justify-center shadow-lg">
-                  <div className="text-center">
-                    <MapPin className="w-16 h-16 text-blue-900 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Campus Location</h3>
-                    <p className="text-gray-600">Interactive map would be displayed here</p>
-                  </div>
+          {/* Quick Help & Campus Desk Info (5 cols) */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            <div className="bg-[#12172B] text-white p-7 rounded-3xl border border-[#232D4B] shadow-xl space-y-5">
+              <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+                <MapPin className="w-6 h-6 text-[#E8B93F]" />
+                <div>
+                  <h3 className="text-lg font-bold font-serif text-white">Campus Information Desk</h3>
+                  <p className="text-xs text-[#8B96B5]">Main Quadrangle Welcome Pavilion</p>
                 </div>
+              </div>
 
-                {/* Quick Links */}
-                <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Links</h3>
-                  <div className="space-y-3">
-                    <a href="#" className="flex items-center space-x-3 text-gray-700 hover:text-blue-900 transition-colors">
-                      <MessageSquare className="w-5 h-5" />
-                      <span>Live Chat Support</span>
-                    </a>
-                    <a href="#" className="flex items-center space-x-3 text-gray-700 hover:text-blue-900 transition-colors">
-                      <HelpCircle className="w-5 h-5" />
-                      <span>FAQs</span>
-                    </a>
-                    <a href="#" className="flex items-center space-x-3 text-gray-700 hover:text-blue-900 transition-colors">
-                      <MapPin className="w-5 h-5" />
-                      <span>Campus Tour</span>
-                    </a>
-                  </div>
+              <div className="space-y-3 text-xs text-[#EDE9DF]">
+                <p className="leading-relaxed">
+                  Campus walking tours depart daily at 10:00 AM and 2:00 PM from the Welcome Pavilion. Advance booking is recommended for prospective scholar groups.
+                </p>
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                  <p className="font-bold text-[#E8B93F]">Emergency Campus Safety Desk</p>
+                  <p className="text-[11px] text-[#8B96B5]">24/7 Security Patrol: +1 (555) 911-CAMP</p>
                 </div>
               </div>
             </div>
+
+            <div className="paper-card p-6 space-y-4">
+              <h4 className="text-sm font-bold font-serif text-[#12172B]">Direct Digital Services</h4>
+              <div className="space-y-2.5 text-xs">
+                <a href="#" className="flex items-center justify-between p-2.5 rounded-xl bg-[#EDE9DF]/40 hover:bg-[#EDE9DF] text-[#12172B] transition-colors">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4 text-[#E8B93F]" />
+                    <span>Live Advising Chat (M–F 9–5)</span>
+                  </div>
+                  <span className="text-[10px] text-[#5C6788]">Online</span>
+                </a>
+                <a href="#" className="flex items-center justify-between p-2.5 rounded-xl bg-[#EDE9DF]/40 hover:bg-[#EDE9DF] text-[#12172B] transition-colors">
+                  <div className="flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-[#E8B93F]" />
+                    <span>Student Knowledge Base & FAQ</span>
+                  </div>
+                  <span className="text-[10px] text-[#5C6788]">50+ Guides</span>
+                </a>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </section>
 
-      {/* Department Directory */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Department Directory</h2>
-            <p className="text-xl text-gray-600">Direct contacts for specific departments</p>
+      {/* Department Directory Table */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="paper-card p-8 sm:p-10 space-y-6">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#5C6788]">Registry</span>
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#12172B] mt-1">
+              Department Direct Lines
+            </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {departments.map((dept, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
+                className="p-5 rounded-2xl bg-[#EDE9DF]/40 border border-[#E5E0D2] space-y-3 hover:bg-[#EDE9DF]/70 transition-all"
               >
-                <h3 className="text-lg font-bold text-gray-900 mb-4">{dept.name}</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center space-x-2 text-gray-600">
-                    <Mail className="w-4 h-4 flex-shrink-0" />
-                    <a href={`mailto:${dept.email}`} className="hover:text-blue-900 truncate">
+                <div className="space-y-0.5">
+                  <h4 className="text-sm font-bold font-serif text-[#12172B]">{dept.name}</h4>
+                  <p className="text-[11px] text-[#E8B93F] font-semibold">{dept.room}</p>
+                </div>
+
+                <div className="space-y-1 text-xs text-[#5C6788] pt-2 border-t border-[#E5E0D2]">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-3.5 h-3.5 text-[#12172B] flex-shrink-0" />
+                    <a href={`mailto:${dept.email}`} className="hover:text-[#12172B] truncate font-medium">
                       {dept.email}
                     </a>
                   </div>
-                  <div className="flex items-center space-x-2 text-gray-600">
-                    <Phone className="w-4 h-4 flex-shrink-0" />
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-[#12172B] flex-shrink-0" />
                     <span>{dept.phone}</span>
                   </div>
                 </div>
@@ -272,6 +344,8 @@ export function Contact() {
           </div>
         </div>
       </section>
+
     </div>
   );
 }
+

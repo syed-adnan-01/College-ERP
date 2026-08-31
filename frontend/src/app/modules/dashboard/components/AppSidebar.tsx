@@ -56,18 +56,18 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b border-sidebar-border bg-sidebar h-16 flex items-center justify-center px-4">
+      <SidebarHeader className="border-b border-white/10 bg-[#12172B] h-16 flex items-center justify-center px-4">
         <div className="flex items-center space-x-3 w-full">
-          <div className="bg-blue-600 p-2 rounded-xl flex-shrink-0">
+          <div className="bg-[#E8B93F] text-[#12172B] p-2 rounded-xl flex-shrink-0 shadow-sm">
             {tenant?.logo ? (
               <img src={tenant.logo} alt="Logo" className="w-6 h-6 object-contain" />
             ) : (
-              <GraduationCap className="w-6 h-6 text-white" />
+              <GraduationCap className="w-6 h-6 text-[#12172B]" />
             )}
           </div>
           <div className="truncate">
-            <h1 className="text-sm font-bold text-sidebar-foreground truncate">{tenant?.name || "EduPlatform"}</h1>
-            <p className="text-[10px] text-sidebar-foreground/60 uppercase tracking-widest font-bold">{user?.role}</p>
+            <h1 className="text-sm font-bold text-white font-serif tracking-tight truncate">{tenant?.name || "EduPlatform"}</h1>
+            <p className="text-[10px] text-[#8B96B5] uppercase tracking-widest font-semibold">{user?.role || "Student"}</p>
           </div>
         </div>
       </SidebarHeader>

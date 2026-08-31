@@ -17,6 +17,16 @@ function tenantHeaders(): Record<string, string> {
   return { 'X-Tenant-Slug': subdomain };
 }
 
+async function safeJson<T>(response: Response): Promise<T | null> {
+  try {
+    const text = await response.text();
+    if (!text || text.trim() === '') return null;
+    return JSON.parse(text) as T;
+  } catch (e) {
+    return null;
+  }
+}
+
 export class TenantService {
   static async getCurrentTenant(): Promise<Tenant | null> {
     try {
@@ -26,8 +36,8 @@ export class TenantService {
           ...tenantHeaders(),
         },
       });
-      const data: ApiResponse<Tenant> = await response.json();
-      return data.success && data.data ? data.data : null;
+      const data = await safeJson<ApiResponse<Tenant>>(response);
+      return data && data.success && data.data ? data.data : null;
     } catch (err) {
       console.warn('Failed to fetch current tenant context:', err);
       return null;
@@ -37,11 +47,12 @@ export class TenantService {
   static async getTenantBySlug(slug: string): Promise<Tenant | null> {
     try {
       const response = await fetch(`${API_BASE_URL}/tenants/${slug}`);
-      const data: ApiResponse<Tenant> = await response.json();
-      return data.success && data.data ? data.data : null;
+      const data = await safeJson<ApiResponse<Tenant>>(response);
+      return data && data.success && data.data ? data.data : null;
     } catch (err) {
       console.warn(`Failed to fetch tenant by slug ${slug}:`, err);
       return null;
     }
   }
 }
+

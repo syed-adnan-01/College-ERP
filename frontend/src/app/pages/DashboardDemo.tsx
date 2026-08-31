@@ -9,37 +9,39 @@ export function DashboardDemo() {
   const { tenant } = useTenant();
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-[#F7F5EF] text-[#12172B] flex flex-col">
       {/* Top Navbar */}
-      <header className="border-b border-gray-800 bg-gray-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+      <header className="border-b border-[#E5E0D2] bg-white/90 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center space-x-3">
-          <div className="bg-blue-600 p-2 rounded-xl">
-            <GraduationCap className="w-6 h-6 text-white" />
+          <div className="bg-[#E8B93F] text-[#12172B] p-2 rounded-xl shadow-sm">
+            <GraduationCap className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-lg font-bold">EduPlatform ERP Portal</h1>
-            <p className="text-xs text-blue-400 font-medium">
+            <h1 className="text-lg font-bold font-serif text-[#12172B]">EduPlatform ERP Portal</h1>
+            <p className="text-xs text-[#5C6788] font-medium">
               Tenant: {tenant?.name || user?.tenantId || "Demo University"}
             </p>
           </div>
         </div>
 
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-3 bg-gray-800/80 px-3 py-1.5 rounded-full border border-gray-700">
+          <div className="flex items-center space-x-3 bg-[#EDE9DF]/60 px-3.5 py-1.5 rounded-full border border-[#E5E0D2]">
             {user?.avatar ? (
-              <img src={user.avatar} alt="Avatar" className="w-7 h-7 rounded-full object-cover" />
+              <img src={user.avatar} alt="Avatar" className="w-7 h-7 rounded-full object-cover border border-white" />
             ) : (
-              <User className="w-5 h-5 text-gray-300" />
+              <div className="w-6 h-6 rounded-full bg-[#12172B] text-white flex items-center justify-center text-xs font-bold">
+                {user?.firstName?.[0] || "U"}
+              </div>
             )}
-            <span className="text-sm font-semibold">{user?.firstName} {user?.lastName}</span>
-            <span className="text-xs px-2 py-0.5 bg-blue-900/60 text-blue-300 border border-blue-700/50 rounded-full uppercase tracking-wider font-bold">
+            <span className="text-sm font-semibold text-[#12172B]">{user?.firstName} {user?.lastName}</span>
+            <span className="text-xs px-2.5 py-0.5 bg-[#FFF9E6] text-[#12172B] border border-[#E8B93F] rounded-full uppercase tracking-wider font-bold">
               {user?.role}
             </span>
           </div>
 
           <button
             onClick={() => logout()}
-            className="flex items-center space-x-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 px-4 py-2 rounded-xl transition-all text-sm font-semibold"
+            className="flex items-center space-x-2 bg-[#FEF2F0] hover:bg-[#FDE2DC] text-[#9C3823] border border-[#E2725B]/40 px-4 py-2 rounded-xl transition-all text-sm font-semibold"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>
@@ -49,20 +51,20 @@ export function DashboardDemo() {
 
       {/* Main Content */}
       <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
-        {/* Welcome Alert */}
-        <div className="bg-gradient-to-r from-blue-950 via-indigo-950 to-purple-950 border border-indigo-800/50 rounded-2xl p-6 shadow-xl flex items-center justify-between">
+        {/* Welcome Alert in Ink Paper */}
+        <div className="bg-[#12172B] text-white border border-[#232D4B] rounded-2xl p-6 shadow-md flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-1">
+            <h2 className="text-2xl font-bold font-serif text-white mb-1">
               Welcome back, {user?.firstName}!
             </h2>
-            <p className="text-gray-300 text-sm">
-              You are authenticated as <strong className="text-blue-400 capitalize">{user?.role}</strong> in tenant{" "}
-              <strong className="text-indigo-300">{tenant?.name || user?.tenantId}</strong>.
+            <p className="text-[#8B96B5] text-sm">
+              You are authenticated as <strong className="text-[#E8B93F] capitalize">{user?.role}</strong> in tenant{" "}
+              <strong className="text-white">{tenant?.name || user?.tenantId}</strong>.
             </p>
           </div>
           {isSuperAdmin && (
-            <div className="bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2">
-              <ShieldCheck className="w-4 h-4" />
+            <div className="bg-[#FFF9E6] text-[#12172B] border border-[#E8B93F] px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2">
+              <ShieldCheck className="w-4 h-4 text-[#E8B93F]" />
               <span>Cross-Tenant Platform Access Active</span>
             </div>
           )}
@@ -70,43 +72,49 @@ export function DashboardDemo() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* User Profile Card */}
-          <div className="bg-gray-950/60 border border-gray-800 rounded-2xl p-6 shadow-md space-y-4">
+          <div className="paper-card p-6 space-y-4">
             <div className="flex items-center space-x-3">
-              <User className="w-6 h-6 text-blue-400" />
-              <h3 className="text-lg font-bold">User Identity</h3>
+              <div className="p-2 rounded-lg bg-[#E8B93F]/15 text-[#12172B]">
+                <User className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold font-serif">User Identity</h3>
             </div>
-            <div className="space-y-2 text-sm text-gray-300">
-              <p><strong>User ID:</strong> <code className="text-gray-400 text-xs">{user?.id}</code></p>
-              <p><strong>Email:</strong> {user?.email}</p>
-              <p><strong>Role:</strong> <span className="capitalize">{user?.role}</span></p>
-              <p><strong>Tenant ID:</strong> <code className="text-gray-400 text-xs">{user?.tenantId}</code></p>
+            <div className="space-y-2 text-sm text-[#5C6788]">
+              <p><strong>User ID:</strong> <code className="text-[#12172B] bg-[#EDE9DF] px-1.5 py-0.5 rounded text-xs">{user?.id}</code></p>
+              <p><strong>Email:</strong> <span className="text-[#12172B]">{user?.email}</span></p>
+              <p><strong>Role:</strong> <span className="capitalize text-[#12172B] font-semibold">{user?.role}</span></p>
+              <p><strong>Tenant ID:</strong> <code className="text-[#12172B] bg-[#EDE9DF] px-1.5 py-0.5 rounded text-xs">{user?.tenantId}</code></p>
             </div>
           </div>
 
           {/* Tenant Context Card */}
-          <div className="bg-gray-950/60 border border-gray-800 rounded-2xl p-6 shadow-md space-y-4">
+          <div className="paper-card p-6 space-y-4">
             <div className="flex items-center space-x-3">
-              <Building className="w-6 h-6 text-indigo-400" />
-              <h3 className="text-lg font-bold">Tenant Context</h3>
+              <div className="p-2 rounded-lg bg-[#5C6788]/15 text-[#12172B]">
+                <Building className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold font-serif">Tenant Context</h3>
             </div>
-            <div className="space-y-2 text-sm text-gray-300">
-              <p><strong>Tenant Name:</strong> {tenant?.name || "Demo University"}</p>
-              <p><strong>Slug:</strong> <code className="text-gray-400 text-xs">{tenant?.slug || "demo"}</code></p>
-              <p><strong>Domain:</strong> {tenant?.domain || "demo.eduplatform.com"}</p>
-              <p><strong>Subscription:</strong> {tenant?.subscriptionTier || tenant?.subscription || "PRO"}</p>
+            <div className="space-y-2 text-sm text-[#5C6788]">
+              <p><strong>Tenant Name:</strong> <span className="text-[#12172B] font-semibold">{tenant?.name || "Demo University"}</span></p>
+              <p><strong>Slug:</strong> <code className="text-[#12172B] bg-[#EDE9DF] px-1.5 py-0.5 rounded text-xs">{tenant?.slug || "demo"}</code></p>
+              <p><strong>Domain:</strong> <span className="text-[#12172B]">{tenant?.domain || "demo.eduplatform.com"}</span></p>
+              <p><strong>Subscription:</strong> <span className="text-[#12172B] font-semibold">{tenant?.subscriptionTier || tenant?.subscription || "PRO"}</span></p>
             </div>
           </div>
 
           {/* Role & Permissions Card */}
-          <div className="bg-gray-950/60 border border-gray-800 rounded-2xl p-6 shadow-md space-y-4">
+          <div className="paper-card p-6 space-y-4">
             <div className="flex items-center space-x-3">
-              <Key className="w-6 h-6 text-purple-400" />
-              <h3 className="text-lg font-bold">Granted Permissions</h3>
+              <div className="p-2 rounded-lg bg-[#2E7D68]/15 text-[#2E7D68]">
+                <Key className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold font-serif">Granted Permissions</h3>
             </div>
             <div className="max-h-40 overflow-y-auto pr-2 space-y-1.5">
               {userPermissions.map((perm) => (
-                <div key={perm} className="flex items-center space-x-2 text-xs text-gray-300 bg-gray-900/90 px-2.5 py-1 rounded border border-gray-800">
-                  <CheckCircle className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                <div key={perm} className="flex items-center space-x-2 text-xs text-[#12172B] bg-[#FDFCF7] px-2.5 py-1.5 rounded border border-[#E5E0D2]">
+                  <CheckCircle className="w-3.5 h-3.5 text-[#2E7D68] flex-shrink-0" />
                   <code>{perm}</code>
                 </div>
               ))}

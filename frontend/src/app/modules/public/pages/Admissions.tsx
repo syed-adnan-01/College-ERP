@@ -1,270 +1,349 @@
-import { CheckCircle, FileText, UserCheck, CreditCard, GraduationCap, Calendar, DollarSign, Award } from "lucide-react";
+import { CheckCircle2, FileText, UserCheck, CreditCard, GraduationCap, Calendar, DollarSign, Award, ArrowRight, ShieldCheck, Clock } from "lucide-react";
 import { Link } from "react-router";
+import { HighlighterUnderline } from "../../../components/ui/HighlighterUnderline";
+import { useTenant } from "../../auth/context/TenantContext";
 
 export function Admissions() {
+  const { tenant } = useTenant();
+  const collegeName = tenant?.name || "EduPlatform";
+
   const admissionSteps = [
     {
+      step: "01",
       icon: FileText,
-      title: "Submit Application",
-      description: "Complete the online application form with all required details and documents.",
+      title: "Submit Online Application",
+      description: "Complete your online applicant dossier with high school or undergraduate transcripts and statement of intent.",
     },
     {
+      step: "02",
       icon: CreditCard,
-      title: "Application Fee",
-      description: "Pay the non-refundable application fee of $100 through our secure payment gateway.",
+      title: "Dossier Processing Fee",
+      description: "Submit the standard $100 processing fee through our secure digital payment gateway (fee waivers available for eligible scholars).",
     },
     {
+      step: "03",
       icon: UserCheck,
-      title: "Document Verification",
-      description: "Our team will review your documents and academic credentials.",
+      title: "Credential Verification",
+      description: "Our academic registrar team verifies all certified transcripts, letters of recommendation, and test scores.",
     },
     {
+      step: "04",
       icon: Award,
-      title: "Entrance Exam",
-      description: "Attend the entrance examination or submit standardized test scores.",
+      title: "Entrance & Faculty Interview",
+      description: "Complete the standardized entrance assessment or attend a virtual dialogue with department faculty chairs.",
     },
     {
-      icon: CheckCircle,
-      title: "Admission Decision",
-      description: "Receive your admission decision within 2-3 weeks of application completion.",
+      step: "05",
+      icon: CheckCircle2,
+      title: "Admissions Decision",
+      description: "Receive your official notification of admission and scholarship awards within 2 to 3 weeks of file completion.",
     },
     {
+      step: "06",
       icon: GraduationCap,
-      title: "Enrollment",
-      description: "Accept your offer and complete enrollment formalities to secure your seat.",
+      title: "Matriculation & Enrollment",
+      description: "Accept your offer, select your residential college or housing, and access your new student digital desk portal.",
     },
   ];
 
   const eligibilityCriteria = [
     {
-      program: "Undergraduate Programs",
+      program: "Undergraduate Degrees",
       requirements: [
-        "Completion of high school (12th grade) or equivalent",
-        "Minimum GPA of 3.0 or equivalent",
-        "SAT/ACT scores (for international applicants)",
-        "English proficiency test (TOEFL/IELTS for non-native speakers)",
+        "Completion of Higher Secondary / 12th Grade or equivalent",
+        "Minimum GPA of 3.0 / 4.0 or equivalent percentage",
+        "Standardized test scores (SAT/ACT optional for domestic applicants)",
+        "Proof of English proficiency (TOEFL/IELTS for non-native speakers)",
       ],
+      badge: "B.Tech • BBA • B.Sc",
     },
     {
-      program: "Graduate Programs",
+      program: "Graduate & Master's",
       requirements: [
-        "Bachelor's degree from an accredited institution",
-        "Minimum GPA of 3.5 in undergraduate studies",
-        "GRE/GMAT scores (program dependent)",
-        "Letters of recommendation (2-3)",
-        "Statement of purpose",
+        "Bachelor's degree from a recognized accredited university",
+        "Minimum cumulative undergraduate GPA of 3.2",
+        "GRE/GMAT scores (subject-specific requirements apply)",
+        "2 Academic Letters of Recommendation & Statement of Purpose",
       ],
+      badge: "MBA • M.Tech • M.Sc",
     },
     {
-      program: "Doctoral Programs",
+      program: "Doctoral Programs (Ph.D.)",
       requirements: [
-        "Master's degree in relevant field",
-        "Exceptional academic record",
-        "Research proposal",
-        "Letters of recommendation (3)",
-        "Interview with faculty committee",
+        "Master's degree in relevant discipline with distinction",
+        "Formal peer-reviewed research proposal (3,000 words)",
+        "3 Faculty Letters of Endorsement",
+        "Admissions committee interview and defense",
       ],
+      badge: "Ph.D. Fellowships",
     },
   ];
 
   const importantDates = [
-    { event: "Early Decision Deadline", date: "November 15, 2026" },
-    { event: "Regular Decision Deadline", date: "January 15, 2027" },
-    { event: "Financial Aid Application", date: "February 1, 2027" },
-    { event: "Admission Decisions Released", date: "March 31, 2027" },
-    { event: "Enrollment Confirmation", date: "May 1, 2027" },
-    { event: "Fall Semester Begins", date: "August 25, 2027" },
+    { event: "Early Decision Application Deadline", date: "November 15, 2026", tag: "Early Action" },
+    { event: "Regular Decision Filing Closes", date: "January 15, 2027", tag: "Main Cohort" },
+    { event: "Need & Merit Financial Aid Submissions", date: "February 01, 2027", tag: "Scholarships" },
+    { event: "Admissions & Merit Decisions Released", date: "March 31, 2027", tag: "Decision Day" },
+    { event: "Enrollment Confirmation & Deposit", date: "May 01, 2027", tag: "Commitment" },
+    { event: "Fall Semester Orientation & Move-In", date: "August 25, 2027", tag: "Campus Life" },
   ];
 
   const requiredDocuments = [
-    "Completed application form",
-    "Official transcripts from all previously attended institutions",
-    "Letters of recommendation",
-    "Personal statement or essay",
-    "Standardized test scores (SAT/ACT/GRE/GMAT)",
-    "Proof of English proficiency (if applicable)",
-    "Copy of passport (for international students)",
-    "Financial support documentation",
+    "Completed electronic application dossier",
+    "Official transcripts from all secondary & tertiary institutions",
+    "2–3 Academic letters of recommendation from faculty mentors",
+    "Personal Statement of Purpose and career objectives",
+    "Standardized score reports (SAT / GRE / GMAT if required)",
+    "Certified English language proficiency scores",
+    "Government identity documentation / valid passport copy",
+    "Financial aid and scholarship sponsorship forms",
   ];
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -mr-48 -mt-48"></div>
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full -ml-40 -mb-40"></div>
+    <div className="space-y-16 sm:space-y-24 py-8 sm:py-12">
+      
+      {/* Header Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="paper-card p-8 sm:p-14 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 ambient-glow-amber rounded-full pointer-events-none" />
+
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#EDE9DF] text-[#12172B] text-xs font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#E8B93F]" />
+              <span>Fall 2026 Admissions Portal</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl font-bold font-serif text-[#12172B] tracking-tight leading-tight">
+              Begin Your Journey of{" "}
+              <HighlighterUnderline color="#E8B93F">
+                Scholarship
+              </HighlighterUnderline>
+            </h1>
+
+            <p className="text-base sm:text-lg text-[#5C6788] leading-relaxed">
+              Step into an environment where academic curiosity is nurtured, research is prioritized, and your ambitions are backed by world-class faculty.
+            </p>
+
+            <div className="pt-2 flex flex-wrap gap-4">
+              <a
+                href="#process"
+                className="px-6 py-3 bg-[#12172B] hover:bg-[#1f2742] text-white font-semibold rounded-xl transition-all shadow-xs flex items-center gap-2 text-sm"
+              >
+                <span>View 6-Step Process</span>
+                <ArrowRight className="w-4 h-4 text-[#E8B93F]" />
+              </a>
+
+              <Link
+                to="/contact"
+                className="px-6 py-3 bg-white hover:bg-[#EDE9DF] text-[#12172B] font-semibold rounded-xl border border-[#E5E0D2] transition-all text-sm"
+              >
+                Inquire with Admissions Desk
+              </Link>
+            </div>
           </div>
         </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Admissions</h1>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto mb-8">
-            Start your journey to excellence. Join thousands of students pursuing their dreams at EduPlatform.
+      </section>
+
+      {/* 6-Step Admission Roadmap */}
+      <section id="process" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#5C6788]">Roadmap</span>
+          <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#12172B] mt-1">
+            The Admissions Journey
+          </h2>
+          <p className="text-sm text-[#5C6788] mt-2">
+            A transparent, streamlined six-stage evaluation process.
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-xl hover:shadow-2xl hover:scale-105 transition-all">
-            Apply Now
-          </button>
         </div>
-      </section>
 
-      {/* Admission Process */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Admission Process</h2>
-            <p className="text-xl text-gray-600">Follow these simple steps to apply</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {admissionSteps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <div
-                  key={index}
-                  className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100"
-                >
-                  {/* Step Number */}
-                  <div className="absolute -top-4 -left-4 w-10 h-10 bg-gradient-to-br from-blue-900 to-indigo-700 text-white rounded-full flex items-center justify-center font-bold shadow-lg">
-                    {index + 1}
-                  </div>
-
-                  {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl mb-4 mt-2">
-                    <Icon className="w-7 h-7 text-blue-900" />
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Eligibility Criteria */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Eligibility Criteria</h2>
-            <p className="text-xl text-gray-600">Minimum requirements for admission</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {eligibilityCriteria.map((criteria, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {admissionSteps.map((step, index) => {
+            const Icon = step.icon;
+            return (
               <div
                 key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all"
+                className="paper-card p-6 sm:p-7 relative flex flex-col justify-between space-y-4 hover:shadow-xl transition-all"
               >
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">{criteria.program}</h3>
-                <ul className="space-y-3">
-                  {criteria.requirements.map((req, idx) => (
-                    <li key={idx} className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-cyan-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{req}</span>
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-xl bg-[#12172B] text-[#E8B93F] flex items-center justify-center font-serif font-bold text-sm shadow-xs">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <span className="text-2xl font-bold font-serif text-[#D7D0C0]">
+                    {step.step}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-bold font-serif text-[#12172B] mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-xs text-[#5C6788] leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-[#E5E0D2]/70 text-[11px] font-semibold text-[#12172B]">
+                  Stage {index + 1} of 6
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Eligibility Criteria Matrix */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-4 border-b border-[#E5E0D2]">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#5C6788]">Requirements</span>
+            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#12172B] mt-1">
+              Eligibility by Program Level
+            </h2>
+          </div>
+          <span className="margin-note text-xs">
+            Accredited Standards
+          </span>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-7">
+          {eligibilityCriteria.map((c, idx) => (
+            <div key={idx} className="paper-card p-7 flex flex-col justify-between space-y-6 hover:shadow-xl transition-all">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#E8B93F]">
+                    {c.badge}
+                  </span>
+                </div>
+
+                <h3 className="text-2xl font-bold font-serif text-[#12172B]">
+                  {c.program}
+                </h3>
+
+                <ul className="space-y-3 pt-2">
+                  {c.requirements.map((req, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-xs text-[#5C6788] leading-relaxed">
+                      <CheckCircle2 className="w-4 h-4 text-[#2E7D68] mt-0.5 flex-shrink-0" />
+                      <span>{req}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            ))}
-          </div>
+
+              <div className="pt-4 border-t border-[#E5E0D2]">
+                <Link
+                  to="/courses"
+                  className="text-xs font-bold text-[#12172B] hover:text-[#E8B93F] flex items-center gap-1 transition-colors"
+                >
+                  <span>Explore Eligible Degrees</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Required Documents */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      {/* Required Documents & Key Calendar Deadlines */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Documents Checklist (7 cols) */}
+          <div className="lg:col-span-7 paper-card p-7 sm:p-8 space-y-6">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Required Documents</h2>
-              <p className="text-gray-600 mb-8">
-                Please ensure you have all the following documents ready before starting your application:
+              <span className="text-xs font-bold uppercase tracking-wider text-[#5C6788]">Checklist</span>
+              <h3 className="text-2xl font-bold font-serif text-[#12172B] mt-1">
+                Required Application Documents
+              </h3>
+              <p className="text-xs text-[#5C6788] mt-1">
+                Ensure all documents are uploaded as certified PDFs before the deadline.
               </p>
-              <div className="space-y-3">
-                {requiredDocuments.map((doc, index) => (
-                  <div key={index} className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{doc}</span>
-                  </div>
-                ))}
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-3">
+              {requiredDocuments.map((doc, index) => (
+                <div key={index} className="p-3 rounded-xl bg-[#EDE9DF]/40 border border-[#E5E0D2] flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#12172B] mt-0.5 flex-shrink-0" />
+                  <span className="text-xs text-[#12172B] font-medium leading-snug">{doc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Important Deadlines Card (5 cols) */}
+          <div className="lg:col-span-5 bg-[#12172B] text-white p-7 sm:p-8 rounded-3xl border border-[#232D4B] shadow-2xl space-y-6">
+            <div className="flex items-center space-x-3 border-b border-white/10 pb-4">
+              <Calendar className="w-6 h-6 text-[#E8B93F]" />
+              <div>
+                <h3 className="text-xl font-bold font-serif text-white">Admissions Calendar</h3>
+                <p className="text-xs text-[#8B96B5]">Academic Cycle 2026–2027</p>
               </div>
             </div>
 
-            {/* Important Dates */}
-            <div className="bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 rounded-2xl p-8 text-white shadow-2xl">
-              <div className="flex items-center space-x-2 mb-6">
-                <Calendar className="w-8 h-8" />
-                <h3 className="text-3xl font-bold">Important Dates</h3>
-              </div>
-              <div className="space-y-4">
-                {importantDates.map((item, index) => (
-                  <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                    <div className="font-semibold mb-1">{item.event}</div>
-                    <div className="text-cyan-300 text-sm">{item.date}</div>
+            <div className="space-y-3.5">
+              {importantDates.map((item, index) => (
+                <div key={index} className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold text-white">{item.event}</p>
+                    <p className="text-[11px] text-[#E8B93F] font-semibold mt-0.5 flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      <span>{item.date}</span>
+                    </p>
                   </div>
-                ))}
-              </div>
+                  <span className="text-[10px] font-semibold bg-white/10 text-[#EDE9DF] px-2 py-0.5 rounded flex-shrink-0">
+                    {item.tag}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
+
         </div>
       </section>
 
-      {/* Financial Aid */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-900 to-indigo-700 rounded-full mb-6">
-              <DollarSign className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Financial Aid & Scholarships</h2>
-            <p className="text-xl text-gray-600 mb-8">
-              We offer various financial aid options and merit-based scholarships to help you achieve your educational goals. 
-              Over 70% of our students receive some form of financial assistance.
+      {/* Financial Aid & Scholarships Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="paper-card p-8 sm:p-12 text-center max-w-4xl mx-auto space-y-6">
+          <div className="w-14 h-14 rounded-2xl bg-[#FFF9E6] text-[#9C7515] border border-[#E8B93F]/40 flex items-center justify-center mx-auto shadow-xs">
+            <DollarSign className="w-7 h-7" />
+          </div>
+
+          <div className="space-y-2">
+            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#12172B]">
+              Tuition, Grants & Merit Fellowships
+            </h2>
+            <p className="text-sm sm:text-base text-[#5C6788] max-w-2xl mx-auto leading-relaxed">
+              We are committed to ensuring that financial limitations never stand in the way of exceptional academic talent. Over 70% of enrolled scholars receive substantial financial assistance.
             </p>
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white rounded-xl p-6 shadow-lg">
-                <div className="text-3xl font-bold text-blue-900 mb-2">$50M+</div>
-                <div className="text-gray-600">In Financial Aid Annually</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-lg">
-                <div className="text-3xl font-bold text-blue-900 mb-2">70%</div>
-                <div className="text-gray-600">Students Receive Aid</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-lg">
-                <div className="text-3xl font-bold text-blue-900 mb-2">200+</div>
-                <div className="text-gray-600">Scholarship Programs</div>
-              </div>
-            </div>
-            <button className="px-8 py-4 bg-blue-900 text-white rounded-xl hover:bg-indigo-800 transition-all">
-              Learn About Financial Aid
-            </button>
           </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Apply?</h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Take the first step towards your future. Our admissions team is here to help you through every step of the process.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-xl hover:shadow-2xl hover:scale-105 transition-all">
-              Start Application
-            </button>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-2">
+            <div className="p-5 rounded-xl bg-[#EDE9DF]/50 border border-[#E5E0D2]">
+              <h4 className="text-3xl font-bold font-serif text-[#12172B]">$50M+</h4>
+              <p className="text-xs font-semibold text-[#5C6788] mt-1">Annual Aid & Endowments</p>
+            </div>
+            <div className="p-5 rounded-xl bg-[#EDE9DF]/50 border border-[#E5E0D2]">
+              <h4 className="text-3xl font-bold font-serif text-[#E8B93F]">70%</h4>
+              <p className="text-xs font-semibold text-[#5C6788] mt-1">Scholars Receiving Aid</p>
+            </div>
+            <div className="p-5 rounded-xl bg-[#EDE9DF]/50 border border-[#E5E0D2]">
+              <h4 className="text-3xl font-bold font-serif text-[#2E7D68]">200+</h4>
+              <p className="text-xs font-semibold text-[#5C6788] mt-1">Specialized Scholarships</p>
+            </div>
+          </div>
+
+          <div className="pt-4">
             <Link
               to="/contact"
-              className="px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-xl hover:bg-white/20 transition-all"
+              className="px-8 py-3.5 bg-[#12172B] hover:bg-[#1f2742] text-white font-semibold rounded-xl transition-all shadow-xs text-sm inline-flex items-center gap-2"
             >
-              Contact Admissions
+              <span>Consult Financial Aid Counselor</span>
+              <ArrowRight className="w-4 h-4 text-[#E8B93F]" />
             </Link>
           </div>
         </div>
       </section>
+
     </div>
   );
 }
+

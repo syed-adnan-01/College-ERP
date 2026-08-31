@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { GraduationCap, Mail, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { GraduationCap, Mail, ArrowRight, CheckCircle2, AlertCircle, ChevronLeft } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
+import { useTenant } from "../context/TenantContext";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,8 @@ export function ForgotPassword() {
     message: "",
   });
   const { forgotPassword } = useAuth();
+  const { tenant } = useTenant();
+  const collegeName = tenant?.name || "EduPlatform";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,68 +32,80 @@ export function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 flex items-center justify-center p-4">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -mr-48 -mt-48"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full -ml-40 -mb-40"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white rounded-full -ml-32 -mt-32"></div>
-      </div>
+    <div className="min-h-screen bg-[#12172B] relative flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      {/* Background Architectural Patterns */}
+      <div className="absolute inset-0 campus-grid-pattern opacity-30 pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 ambient-glow-amber rounded-full pointer-events-none" />
 
-      <div className="relative w-full max-w-md">
-        {/* Logo Header */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-2 mb-4 group">
-            <div className="bg-white p-3 rounded-xl group-hover:scale-105 transition-transform shadow-lg">
-              <GraduationCap className="w-8 h-8 text-blue-900" />
-            </div>
-            <span className="text-2xl font-bold text-white">EduPlatform</span>
+      <div className="relative w-full max-w-md space-y-6">
+        {/* Navigation */}
+        <div className="flex items-center justify-between">
+          <Link
+            to="/login"
+            className="inline-flex items-center space-x-1.5 text-xs text-[#8B96B5] hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10"
+          >
+            <ChevronLeft className="w-4 h-4 text-[#E8B93F]" />
+            <span>Back to Login</span>
           </Link>
-          <h1 className="text-3xl font-bold text-white mb-2">Forgot Password</h1>
-          <p className="text-gray-300">Enter your email to receive a password reset link</p>
+        </div>
+
+        {/* Brand Header */}
+        <div className="text-center space-y-1.5">
+          <div className="inline-flex items-center space-x-2 text-white">
+            <div className="w-10 h-10 rounded-xl bg-[#EDE9DF] text-[#12172B] flex items-center justify-center font-serif font-bold text-lg shadow-md">
+              {tenant?.logo ? (
+                <img src={tenant.logo} alt={collegeName} className="w-6 h-6 object-contain" />
+              ) : (
+                collegeName.charAt(0)
+              )}
+            </div>
+            <span className="text-2xl font-bold font-serif tracking-tight">{collegeName}</span>
+          </div>
+          <h1 className="text-xl font-bold font-serif text-white">Password Recovery</h1>
+          <p className="text-xs text-[#8B96B5]">Enter your institutional email to generate a reset token</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8">
+        <div className="paper-card p-7 sm:p-8 shadow-2xl">
           {status.type === "success" ? (
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-10 h-10" />
+              <div className="w-14 h-14 bg-[#EDE9DF] text-[#2E7D68] rounded-2xl flex items-center justify-center mx-auto border border-[#2E7D68]/30">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Check Your Email</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{status.message}</p>
-              <div className="pt-4">
+              <h3 className="text-lg font-bold font-serif text-[#12172B]">Token Dispatched</h3>
+              <p className="text-xs text-[#5C6788] leading-relaxed">{status.message}</p>
+              <div className="pt-3">
                 <Link
                   to="/reset-password"
-                  className="w-full inline-flex items-center justify-center px-6 py-3 bg-blue-900 text-white font-semibold rounded-xl hover:bg-blue-800 transition-all shadow-md"
+                  className="w-full inline-flex items-center justify-center px-5 py-3 bg-[#12172B] hover:bg-[#1f2742] text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
                 >
                   Proceed to Reset Password
                 </Link>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               {status.type === "error" && (
-                <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-start space-x-2">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                  <span>{status.message}</span>
+                <div className="p-3.5 bg-[#FFF0ED] border border-[#E2725B] text-[#9E3622] rounded-xl text-xs flex items-start space-x-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <span className="font-medium leading-relaxed">{status.message}</span>
                 </div>
               )}
 
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Registered Email Address
+                <label htmlFor="email" className="block text-xs font-bold text-[#12172B] mb-1.5">
+                  Institutional Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Mail className="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5C6788]" />
                   <input
                     type="email"
                     id="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none transition-all"
-                    placeholder="you@example.com"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-[#E5E0D2] bg-white text-xs text-[#12172B] focus:ring-2 focus:ring-[#E8B93F] focus:border-transparent outline-none transition-all"
+                    placeholder="scholar@eduplatform.edu"
                   />
                 </div>
               </div>
@@ -98,16 +113,16 @@ export function ForgotPassword() {
               <button
                 type="submit"
                 disabled={status.type === "loading"}
-                className="w-full px-6 py-4 bg-gradient-to-r from-blue-900 to-indigo-700 text-white rounded-xl hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center space-x-2 group disabled:opacity-50"
+                className="w-full py-3 bg-[#12172B] hover:bg-[#1f2742] text-white text-xs font-semibold rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2 disabled:opacity-50 mt-2"
               >
-                <span>{status.type === "loading" ? "Sending Request..." : "Send Reset Instructions"}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span>{status.type === "loading" ? "Dispatching Token..." : "Send Reset Token"}</span>
+                <ArrowRight className="w-4 h-4 text-[#E8B93F]" />
               </button>
             </form>
           )}
 
-          <div className="mt-8 text-center border-t border-gray-100 pt-6">
-            <Link to="/login" className="text-sm font-semibold text-blue-900 hover:text-indigo-700">
+          <div className="mt-6 text-center border-t border-[#E5E0D2] pt-4">
+            <Link to="/login" className="text-xs font-bold text-[#12172B] hover:text-[#E8B93F]">
               ← Back to Sign In
             </Link>
           </div>
@@ -116,3 +131,4 @@ export function ForgotPassword() {
     </div>
   );
 }
+
