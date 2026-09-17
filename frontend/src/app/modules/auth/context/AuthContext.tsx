@@ -11,6 +11,7 @@ export interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password?: string, role?: UserRole, tenantSlug?: string) => Promise<void>;
+  loginAsDemo: (role?: UserRole) => void;
   loginWithGoogle: (role?: UserRole) => Promise<void>;
   loginWithMicrosoft: (role?: UserRole) => Promise<void>;
   logout: () => Promise<void>;
@@ -24,6 +25,7 @@ export const AuthContext = createContext<AuthContextType>({
   loading: true,
   isAuthenticated: false,
   login: async () => {},
+  loginAsDemo: () => {},
   loginWithGoogle: async () => {},
   loginWithMicrosoft: async () => {},
   logout: async () => {},
@@ -46,6 +48,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const initAuth = async () => {
+      const savedDemo = localStorage.getItem('demo_user');
+      if (savedDemo) {
+        try {
+          const parsed = JSON.parse(savedDemo);
+          setUser(parsed);
+          setLoading(false);
+          return;
+        } catch {}
+      }
+
       const { accessToken } = AuthService.getStoredTokens();
       if (accessToken) {
         const currentUser = await AuthService.getMe();
@@ -61,6 +73,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     initAuth();
   }, []);
+
+  const loginAsDemo = (role: UserRole = "student") => {
+    const demoProfiles: Record<string, AuthUser> = {
+      admin: {
+        id: "demo-admin-id",
+        tenantId: "demo-tenant-id",
+        email: "admin@demo.edu",
+        firstName: "Super",
+        lastName: "Admin",
+        role: "admin",
+        permissions: ["*"],
+      },
+      faculty: {
+        id: "demo-faculty-id",
+        tenantId: "demo-tenant-id",
+        email: "faculty@demo.edu",
+        firstName: "Robert",
+        lastName: "Chen",
+        role: "faculty",
+        permissions: ["academics:*", "attendance:*", "grades:*"],
+      },
+      student: {
+        id: "demo-student-id",
+        tenantId: "demo-tenant-id",
+        email: "student@demo.edu",
+        firstName: "Alice",
+        lastName: "Smith",
+        role: "student",
+        permissions: ["student:view", "attendance:view"],
+      },
+    };
+
+    const targetUser = demoProfiles[role] || demoProfiles.student;
+    setUser(targetUser);
+    localStorage.setItem('demo_user', JSON.stringify(targetUser));
+  };
 
   const login = async (email: string, password?: string, role?: UserRole, tenantSlug?: string) => {
     setLoading(true);
@@ -103,6 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     setLoading(true);
     try {
+      localStorage.removeItem('demo_user');
       await AuthService.logout();
       setUser(null);
       setTenant(null);
@@ -127,6 +176,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loading,
         isAuthenticated: Boolean(user),
         login,
+        loginAsDemo,
         loginWithGoogle,
         loginWithMicrosoft,
         logout,
