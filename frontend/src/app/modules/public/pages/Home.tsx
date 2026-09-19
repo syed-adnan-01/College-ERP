@@ -39,7 +39,7 @@ function TypewriterHeading() {
 
   useEffect(() => {
     const fullText = phrases[currentPhraseIndex];
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
 
     if (!isDeleting) {
       if (currentText.length < fullText.length) {

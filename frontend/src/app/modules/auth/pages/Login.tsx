@@ -15,7 +15,7 @@ export function Login() {
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { login, loginWithGoogle, loginWithMicrosoft, loading } = useAuth();
+  const { login, loginAsDemo, loginWithGoogle, loginWithMicrosoft, loading } = useAuth();
   const { tenant } = useTenant();
   const collegeName = tenant?.name || "EduPlatform";
   const navigate = useNavigate();
@@ -258,7 +258,50 @@ export function Login() {
             </button>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[#E5E0D2] text-center text-xs text-[#5C6788]">
+          {/* Fast Demo Access */}
+          <div className="mt-5 p-3 rounded-xl bg-[#EDE9DF]/60 border border-[#E5E0D2] space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#12172B] flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-[#E8B93F]" />
+                Explore Phase 3 Dashboards
+              </span>
+              <span className="academic-stamp text-[9px] py-0.5 px-1.5">Instant Access</span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  loginAsDemo("admin");
+                  navigate("/dashboard");
+                }}
+                className="py-1.5 px-2 bg-white hover:bg-[#12172B] hover:text-white border border-[#E5E0D2] rounded-lg text-[11px] font-semibold text-[#12172B] transition-all text-center cursor-pointer shadow-2xs"
+              >
+                Admin Desk
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  loginAsDemo("faculty");
+                  navigate("/dashboard");
+                }}
+                className="py-1.5 px-2 bg-white hover:bg-[#12172B] hover:text-white border border-[#E5E0D2] rounded-lg text-[11px] font-semibold text-[#12172B] transition-all text-center cursor-pointer shadow-2xs"
+              >
+                Faculty Desk
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  loginAsDemo("student");
+                  navigate("/dashboard");
+                }}
+                className="py-1.5 px-2 bg-white hover:bg-[#12172B] hover:text-white border border-[#E5E0D2] rounded-lg text-[11px] font-semibold text-[#12172B] transition-all text-center cursor-pointer shadow-2xs"
+              >
+                Student Desk
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-5 pt-3 border-t border-[#E5E0D2] text-center text-xs text-[#5C6788]">
             <span>Prospective applicant? </span>
             <Link to="/admissions" className="font-bold text-[#12172B] hover:text-[#E8B93F] underline decoration-[#E8B93F]">
               Apply for 2026 Admissions

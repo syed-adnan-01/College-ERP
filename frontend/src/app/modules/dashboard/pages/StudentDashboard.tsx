@@ -1,14 +1,37 @@
-import { BookOpen, GraduationCap, Calendar, CreditCard, Clock, CheckCircle2, AlertTriangle, ArrowUpRight, Sparkles, Bookmark } from "lucide-react";
+import { useState } from "react";
+import {
+  BookOpen,
+  GraduationCap,
+  Calendar,
+  CreditCard,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
+  ArrowUpRight,
+  Sparkles,
+  Bookmark,
+  Bell,
+} from "lucide-react";
 import { HighlighterUnderline } from "../../../components/ui/HighlighterUnderline";
+import {
+  StudentGpaProgressionChart,
+  StudentAttendanceDeepDive,
+  StudentFeeOverview,
+} from "../components/StudentAnalytics";
+import { WeeklyTimetable } from "../components/WeeklyTimetable";
+import { NotificationCenter } from "../components/NotificationCenter";
+import { PayFeeModal } from "../components/QuickActionModals";
 
 export function StudentDashboard() {
+  const [isPayModalOpen, setIsPayModalOpen] = useState(false);
+
   return (
     <div className="space-y-8">
-      {/* Overview Stats in Tactile Paper Cards */}
+      {/* Overview Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           title="Current Standing"
-          value="8.4 CGPA"
+          value="8.46 CGPA"
           note="Top 8% of Semester 5 cohort"
           badge="Dean's List Track"
           icon={GraduationCap}
@@ -40,8 +63,9 @@ export function StudentDashboard() {
         />
       </div>
 
+      {/* Main Grid: Course Notebooks & Desk Agenda */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Course Notebooks Column */}
+        {/* Course Notebooks Column (2 cols) */}
         <div className="lg:col-span-2 paper-card p-6 md:p-7 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E0D2] pb-4">
             <div>
@@ -58,7 +82,7 @@ export function StudentDashboard() {
               ✏️ 4 of 5 courses above target
             </span>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <CourseCard
               name="Data Structures & Algorithms"
@@ -112,7 +136,7 @@ export function StudentDashboard() {
           </div>
         </div>
 
-        {/* Desk Agenda / Upcoming Deadlines Column */}
+        {/* Desk Agenda / Upcoming Deadlines Column (1 col) */}
         <div className="space-y-6">
           <div className="paper-card p-6 space-y-5">
             <div className="flex items-center justify-between border-b border-[#E5E0D2] pb-3.5">
@@ -152,13 +176,17 @@ export function StudentDashboard() {
               />
             </div>
 
-            <button className="w-full py-2.5 px-4 bg-[#EDE9DF] hover:bg-[#E5E0D2] text-[#12172B] text-xs font-bold uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-[#D7D0C0]">
+            <button
+              type="button"
+              onClick={() => alert("Navigating to full university academic schedule.")}
+              className="w-full py-2.5 px-4 bg-[#EDE9DF] hover:bg-[#E5E0D2] text-[#12172B] text-xs font-bold uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-[#D7D0C0] cursor-pointer"
+            >
               <span>View Full Academic Calendar</span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Mini Margin Note Widget */}
+          {/* Academic Advisor Note */}
           <div className="p-5 rounded-2xl bg-[#FFFDF5] border border-dashed border-[#E8B93F] shadow-sm transform rotate-[-0.75deg]">
             <div className="flex items-center gap-2 mb-2">
               <Bookmark className="w-4 h-4 text-[#E8B93F]" />
@@ -175,6 +203,27 @@ export function StudentDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Grades & CGPA Tracker Chart + Fee Statement Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <StudentGpaProgressionChart />
+        <StudentFeeOverview onPayClick={() => setIsPayModalOpen(true)} />
+      </div>
+
+      {/* Timetable View */}
+      <WeeklyTimetable isFaculty={false} />
+
+      {/* Attendance Deep Dive & Attendance Percentage Warnings */}
+      <StudentAttendanceDeepDive />
+
+      {/* Real-time Notifications & Alerts Feed */}
+      <NotificationCenter />
+
+      {/* Pay Fee Modal */}
+      <PayFeeModal
+        isOpen={isPayModalOpen}
+        onClose={() => setIsPayModalOpen(false)}
+      />
     </div>
   );
 }
@@ -186,7 +235,7 @@ function StatCard({ title, value, note, badge, icon: Icon, accentColor }: any) {
         <span className="text-xs font-semibold text-[#5C6788] uppercase tracking-wider">
           {title}
         </span>
-        <div 
+        <div
           className="p-2 rounded-xl border border-[#E5E0D2]"
           style={{ backgroundColor: `${accentColor}14`, color: accentColor }}
         >
@@ -217,11 +266,13 @@ function CourseCard({ name, code, credits, attendance, statusText, statusType, p
   const isWarning = statusType === "warning" || attendance < 75;
 
   return (
-    <div className={`p-4 rounded-xl border transition-all duration-200 ${
-      isWarning 
-        ? "bg-[#FEF9F8] border-[#E2725B]/40 hover:border-[#E2725B]" 
-        : "bg-[#FDFCF7] border-[#E5E0D2] hover:border-[#D0C8B5]"
-    }`}>
+    <div
+      className={`p-4 rounded-xl border transition-all duration-200 ${
+        isWarning
+          ? "bg-[#FEF9F8] border-[#E2725B]/40 hover:border-[#E2725B]"
+          : "bg-[#FDFCF7] border-[#E5E0D2] hover:border-[#D0C8B5]"
+      }`}
+    >
       <div className="flex justify-between items-start gap-2 mb-1.5">
         <h4 className="font-bold text-sm text-[#12172B] font-serif leading-snug">
           {name}
@@ -235,32 +286,30 @@ function CourseCard({ name, code, credits, attendance, statusText, statusType, p
         {code}
       </p>
 
-      <p className={`text-xs mb-3 leading-relaxed ${isWarning ? 'text-[#9C3823] font-medium' : 'text-[#5C6788]'}`}>
+      <p className={`text-xs mb-3 leading-relaxed ${isWarning ? "text-[#9C3823] font-medium" : "text-[#5C6788]"}`}>
         {statusText}
       </p>
 
-      {/* Progress & Attendance */}
       <div className="space-y-1.5 pt-2 border-t border-[#E5E0D2]/60">
         <div className="flex justify-between text-xs font-medium">
           <span className="text-[#5C6788]">Syllabus Covered</span>
           <span className="text-[#12172B] font-semibold">{progress}%</span>
         </div>
-        
-        {/* Animated Progress Bar */}
+
         <div className="w-full bg-[#E5E0D2] rounded-full h-1.5 overflow-hidden">
-          <div 
+          <div
             className="h-1.5 rounded-full progress-fill"
-            style={{ 
+            style={{
               width: `${progress}%`,
-              backgroundColor: isWarning ? '#E2725B' : '#E8B93F'
+              backgroundColor: isWarning ? "#E2725B" : "#E8B93F",
             }}
           />
         </div>
 
         <div className="flex justify-between text-[11px] pt-1">
           <span className="text-[#5C6788]">Attendance</span>
-          <span className={`font-semibold ${isWarning ? 'text-[#9C3823]' : 'text-[#2E7D68]'}`}>
-            {attendance}% {isWarning ? '(Warning)' : '(Good)'}
+          <span className={`font-semibold ${isWarning ? "text-[#9C3823]" : "text-[#2E7D68]"}`}>
+            {attendance}% {isWarning ? "(Warning)" : "(Good)"}
           </span>
         </div>
       </div>
@@ -270,14 +319,16 @@ function CourseCard({ name, code, credits, attendance, statusText, statusType, p
 
 function AgendaItem({ title, time, location, tag, isAlert, note }: any) {
   return (
-    <div className={`p-3.5 rounded-xl border transition-colors ${
-      isAlert 
-        ? 'bg-[#FEF2F0] border-[#E2725B]/40' 
-        : 'bg-[#FDFCF7] border-[#E5E0D2] hover:border-[#D0C8B5]'
-    }`}>
+    <div
+      className={`p-3.5 rounded-xl border transition-colors ${
+        isAlert
+          ? "bg-[#FEF2F0] border-[#E2725B]/40"
+          : "bg-[#FDFCF7] border-[#E5E0D2] hover:border-[#D0C8B5]"
+      }`}
+    >
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h5 className={`text-sm font-bold font-serif ${isAlert ? 'text-[#9C3823]' : 'text-[#12172B]'}`}>
+          <h5 className={`text-sm font-bold font-serif ${isAlert ? "text-[#9C3823]" : "text-[#12172B]"}`}>
             {title}
           </h5>
           <p className="text-xs text-[#5C6788] mt-0.5 flex items-center gap-1.5">
@@ -289,7 +340,7 @@ function AgendaItem({ title, time, location, tag, isAlert, note }: any) {
           </p>
         </div>
 
-        <span className={isAlert ? 'margin-note-coral' : 'margin-note'}>
+        <span className={isAlert ? "margin-note-coral" : "margin-note"}>
           {tag}
         </span>
       </div>
@@ -302,4 +353,3 @@ function AgendaItem({ title, time, location, tag, isAlert, note }: any) {
     </div>
   );
 }
-
